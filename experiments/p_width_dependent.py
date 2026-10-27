@@ -84,7 +84,8 @@ def ece(p, yy, nb=10):
 
 def calib_compare(w_pred, w_ref, T, nsplit=NSPLIT, ncal=NCAL, seed=SEED, nsim=400, refer=0.30, prevalences=(None,), calphas=None):
     """同一切分序列上 M2 vs M3 vs 点估计；返回均值字典 + 按流行率的 c_α 表"""
-    rng = np.random.RandomState(seed)
+    rng = np.random.RandomState(seed)          # 切分 + M2 零假设：与 b_estimators_gating.calib_eval 消耗完全一致 → 切分序列与 Table 9 相同
+    rng3 = np.random.RandomState(seed + 1)    # M3 零假设用独立 RNG，不打乱主 RNG 的状态
     n = len(w_pred); y_all = (w_ref > T).astype(float)
     lw = np.log(np.maximum(w_pred, 1e-3)); lr = np.log(np.maximum(w_ref, 1e-3))
     keys = ["brier_pt", "acc_pt", "ref_pt", "brier2", "acc2", "ref2", "ece2", "nll2", "brier3", "acc3", "ref3", "ece3", "nll3",
@@ -114,7 +115,8 @@ def calib_compare(w_pred, w_ref, T, nsplit=NSPLIT, ncal=NCAL, seed=SEED, nsim=40
             keep = np.argsort(-np.abs(P - 0.5))[: int(round(len(te) * (1 - refer)))]
             acc["ref" + tag].append(np.mean((P[keep] > 0.5) == (y[keep] > 0.5)))
             e_obs = ece(P, y)
-            e_null = np.array([ece(P, (rng.rand(len(P)) < P).astype(float)) for _ in range(nsim)])
+            r_ = rng if tag == "2" else rng3
+            e_null = np.array([ece(P, (r_.rand(len(P)) < P).astype(float)) for _ in range(nsim)])
             acc["ece" + tag].append(float(e_obs > np.percentile(e_null, 95)))
         acc["b"].append(p2["b"]); acc["s2"].append(p2["s"]); acc["alpha"].append(p3["alpha"]); acc["beta"].append(p3["beta"]); acc["s3"].append(p3["s"])
         # c_α × 流行率（重要性权重，与 a_csv A1 一致）
