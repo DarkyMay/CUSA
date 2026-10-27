@@ -1,0 +1,27 @@
+e8_hybrid_segmentor_baseline.py  20261023_002646  torch 2.11.0+cu130
+  图像集（与 paired_v2.csv 一致）: dataset_400 20  DeepCrack 60  NHA12D 80  Crack500 100   未解析 0
+  [垫片] torchmetrics 1.9.0 无 classification.Dice，已注入空壳类
+
+[hs_ours620] 载入 596 张量；missing 0  unexpected 0
+  参数量 237.9 M
+  dataset_400  n= 20  whole 0.3551  tile 0.4891  | SAM3 zs 0.4132  U-Net 0.6095  [域内泄漏]  (3s)
+  DeepCrack    n= 60  whole 0.8038  tile 0.7464  | SAM3 zs 0.8316  U-Net 0.8719  [域内泄漏]  (7s)
+  NHA12D       n= 80  whole 0.2110  tile 0.1906  | SAM3 zs 0.4672  U-Net 0.3771    (45s)
+  Crack500     n=100  whole 0.5768  tile 0.4731  | SAM3 zs 0.6770  U-Net 0.5754    (10s)
+
+==============================================================================================================
+[汇总] Dice（数据集均值）；配对列为 HS 相对 SAM3 零样本：更优图占比 / 中位差 / Wilcoxon p
+==============================================================================================================
+  权重       数据集            n  HS whole  HS tile  SAM3 zs   U-Net              whole: 更优/中位差/p            tile: 更优/中位差/p
+  hs_ours620dataset_400   20    0.3551   0.4891   0.4132  0.6095 泄漏    25% / -0.108 / 9.0e-02    65% / +0.025 / 1.1e-01
+  hs_ours620DeepCrack     60    0.8038   0.7464   0.8316  0.8719 泄漏    30% / -0.028 / 2.5e-04    12% / -0.050 / 3.4e-09
+  hs_ours620NHA12D        80    0.2110   0.1906   0.4672  0.3771        1% / -0.268 / 1.1e-14     8% / -0.275 / 4.7e-14
+  hs_ours620Crack500     100    0.5768   0.4731   0.6770  0.5754       10% / -0.076 / 2.2e-16     0% / -0.180 / 3.9e-18
+  hs_ours620 held-out mean (NHA12D, Crack500): whole 0.3939  tile 0.3318   [SAM3 zs 0.578; U-Net 0.476]
+
+  判读：论文 Table segmain 的公平新增行 = hs_rob 全部四域 + hs_cv12k 的 NHA12D/dataset_400；
+        hs_cv12k 在 Crack500/DeepCrack 是训练域，数值只说明监督上限，不进入'held-out'比较。
+
+>> 逐图CSV: /root/autodl-tmp/proj_bridge/results/e8_hs_perimage_20261023_002646.csv
+>> 日志: /root/autodl-tmp/proj_bridge/results/e8_hs_20261023_002646.txt
+总耗时 1.2 min

@@ -1,0 +1,16 @@
+# CUSA release — tested with Python 3.10, CUDA 12.x (RTX 4090)
+torch==2.11.*
+torchvision
+transformers==5.14.*
+accelerate
+peft            # train_sam3_lora.py
+ultralytics     # YOLO26-seg mask source (e6)
+numpy
+scipy
+scikit-image    # skeletonize, distance transform, Euler number
+scikit-learn
+opencv-python
+pillow
+pandas
+matplotlib
+tqdm
