@@ -1,8 +1,6 @@
 # CUSA — Severity rating as measurement
 
-Code accompanying
 
-> Dai Y., Zhu J., Zhou W., Zhang T., Zeng J., Long K. *Severity rating as measurement: calibrated uncertainty-aware assessment of pavement crack width from segmentation masks.* Computer-Aided Civil and Infrastructure Engineering (under review, CACAIE-D-26-01069).
 
 The repository contains the measurement chain, the calibration and the referral rule of the paper (`core/`), and the scripts that produced every table and figure (`experiments/`). It is research code: paths to data and weights are constants at the top of each script and must be edited for a new machine (see *Data layout*).
 
